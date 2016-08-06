@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>sprite</title>
+</head>
+<body>
+<img id="sprite" src="images/sprite.png" style="display: none" alt=""/>
+<canvas id="canvas" width="800" height="600" style="border: 1px solid red;"></canvas>
+<script>
+    var sprite = document.getElementById("sprite");
+    var cvs = document.getElementById("canvas");
+    var ctx = cvs.getContext("2d");
+
+    //当图片加载完成后，才可绘制
+    sprite.addEventListener("load", function () {
+    //1、绘制小精灵的初始位置
+        ctx.drawImage(sprite, 0, 1536, 256, 256, 272, 172, 256, 256);
+
+    //2、要让小精灵随着键盘切换旋转并移动
+        //设置当前绘制精灵的第几帧
+        var spriteIndex = 0;
+        //精灵绘制时在画布中的x轴坐标
+        var spriteX = 272;
+        //精灵绘制时在画布中的y轴坐标
+        var spriteY = 172
+        //精灵绘制时x轴坐标的速度
+        var speedX = 0;
+        //精灵绘制时y轴坐标的速度
+        var speedY = 0;
+        //精灵绘制时当前方向：上、下、左、右
+        var direction = 6;
+
+        var timer = setInterval(function () {
+
+            ctx.clearRect(0,0,800,600)
+            ctx.drawImage(sprite,
+                    256 * spriteIndex, 256 * direction, 256, 256,
+                    spriteX += speedX, spriteY += speedY, 256, 256);
+
+            spriteIndex++;
+
+            spriteIndex=spriteIndex>7?0:spriteIndex;
+
+
+        }, 1000 / 30)
+
+        document.addEventListener("keydown",function(e){
+
+            switch (e.keyCode){
+                case 37:
+                    direction=0;
+                    speedX=-2;
+                    speedY=0;
+                    break;
+                case  38:
+                    direction=2;
+                    speedX=0;
+                    speedY=-2;
+                    break;
+                case  39:
+                    direction=4;
+                    speedX=2;
+                    speedY=0;
+                    break;
+                case  40:
+                    direction=6;
+                    speedX=0;
+                    speedY=2;
+                    break;
+
+
+            }
+
+
+
+        })
+
+
+
+
+
+
+    })
+
+
+    //封装一个获取角度的函数
+    function angle(angle) {
+        return Math.PI / 180 * angle;
+    }
+</script>
+</body>
+</html>
